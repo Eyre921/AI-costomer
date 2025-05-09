@@ -2,6 +2,7 @@
 
 **Version:** 1.0.0
 **Last Updated:** May 9, 2025
+**Try** https://cos.nfeyre.top/
 
 ## Overview
 

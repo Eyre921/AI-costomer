@@ -1,8 +1,10 @@
 # AI 客户生成器
 
-**版本：** 1.0.0
-**最后更新：** 2025年5月9日
-**试用** https://cos.nfeyre.top/
+版本：**0.1.0**
+
+**README (English):** [https://github.com/Eyre921/AI-customer/blob/master/README_en.md](https://github.com/Eyre921/AI-customer/blob/master/README_en.md)
+
+**试用:** [https://cos.nfeyre.top/](https://cos.nfeyre.top/)
 
 ## 概述
 

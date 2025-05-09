@@ -1,8 +1,10 @@
 # AI Customer Generator
 
-**Version:** 1.0.0
-**Last Updated:** May 9, 2025
-**Try** https://cos.nfeyre.top/
+版本：**0.1.0**
+
+**README (Chinese):** [https://github.com/Eyre921/AI-customer/blob/master/README_en.md](https://github.com/Eyre921/AI-customer/blob/master/README_en.md)
+
+**Try it out:** [https://cos.nfeyre.top/](https://cos.nfeyre.top/)
 
 ## Overview
 

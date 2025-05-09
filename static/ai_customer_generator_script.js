@@ -1,3 +1,4 @@
+// static/ai_customer_generator_script.js
 document.addEventListener('DOMContentLoaded', () => {
     const productInfoTextarea = document.getElementById('product-info');
     const generateButton = document.getElementById('generate-button');
@@ -7,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingSpinner = document.getElementById('loading-spinner');
     const errorBox = document.getElementById('error-box');
 
+    // 获取结果区域的引用
+    const resultsSection = document.getElementById('results-section');
     const productSummaryContainer = document.getElementById('product-summary-container');
     const productSummaryText = document.getElementById('product-summary-text');
     const profilesDisplay = document.getElementById('customer-profiles-display');
@@ -18,7 +21,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentProfilesData = [];
 
-    generateButton.addEventListener('click', async () => {
+    // --- 点击特效 (假设 createRipple 函数已存在) ---
+    function createRipple(event) {
+        const button = event.currentTarget;
+        const existingRipple = button.querySelector(".ripple");
+        if(existingRipple) {
+            existingRipple.remove();
+        }
+        const circle = document.createElement("span");
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+        circle.style.width = circle.style.height = `${diameter}px`;
+        const rect = button.getBoundingClientRect();
+        circle.style.left = `${event.clientX - rect.left - radius}px`;
+        circle.style.top = `${event.clientY - rect.top - radius}px`;
+        circle.classList.add("ripple");
+        button.appendChild(circle);
+        circle.addEventListener('animationend', () => {
+            circle.remove();
+        });
+    }
+
+    generateButton.addEventListener('click', async (event) => {
+        createRipple(event);
+
         const productDocument = productInfoTextarea.value.trim();
         const numProfiles = parseInt(numProfilesInput.value);
         const numQuestions = parseInt(numQuestionsInput.value);
@@ -29,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loadingSpinner.style.display = 'block';
         generateButton.disabled = true;
-        clearResults();
+        clearResults(); // clearResults 会隐藏 resultsSection
         hideError();
 
         try {
@@ -48,14 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const errorData = await response.json();
                     errorDetail = errorData.detail || `服务器错误 ${response.status}`;
+                    if (typeof errorData.detail === 'object') {
+                        errorDetail = JSON.stringify(errorData.detail);
+                    }
                 } catch (e) { errorDetail = `服务器错误 ${response.status}: ${response.statusText}`; }
                 throw new Error(errorDetail);
             }
             const data = await response.json();
+            resultsSection.style.display = 'block'; // 显示结果区域
             renderResults(data);
         } catch (error) {
             console.error('Error fetching AI customer data:', error);
             displayError(error.message || '生成数据时发生未知错误。');
+            resultsSection.style.display = 'none'; // 出错时确保结果区域仍隐藏
         } finally {
             loadingSpinner.style.display = 'none';
             generateButton.disabled = false;
@@ -66,9 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         errorBox.textContent = message;
         errorBox.style.display = 'block';
     }
-    function hideError() { errorBox.style.display = 'none'; }
+    function hideError() {
+        errorBox.style.display = 'none';
+    }
 
     function clearResults() {
+        if(resultsSection) resultsSection.style.display = 'none'; // 隐藏整个结果区域
         productSummaryText.textContent = '';
         productSummaryContainer.style.display = 'none';
         profilesDisplay.innerHTML = '';
@@ -80,49 +114,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderResults(data) {
+        // productSummaryContainer 和 questionsDisplayContainer 的显示逻辑由其内容决定
+        // resultsSection 已在调用此函数前设为 'block'
+
         if (data.product_summary) {
             productSummaryText.textContent = data.product_summary;
             productSummaryContainer.style.display = 'block';
+        } else {
+            productSummaryContainer.style.display = 'none';
         }
+
         currentProfilesData = data.customer_profiles || [];
         profilesDisplay.innerHTML = '';
 
         if (currentProfilesData.length === 0) {
-            profilesDisplay.innerHTML = '<p>未能生成客户画像。</p>';
-            return;
+            profilesDisplay.innerHTML = '<p style="color: #ffcdd2; text-align: center;">未能生成客户画像。</p>';
+            questionsDisplayContainer.style.display = 'none';
+            return; // 如果没有画像，直接返回，不尝试渲染第一个画像的问题
         }
+
         currentProfilesData.forEach((profile, index) => {
             const card = document.createElement('div');
             card.classList.add('profile-card');
             card.dataset.profileIndex = index;
             let concernsHTML = profile.main_concerns && profile.main_concerns.length > 0
-                ? `<strong>主要关注点:</strong> ${profile.main_concerns.join(', ')}<br>` : '';
+                ? `<p><strong>主要关注点:</strong> ${profile.main_concerns.join(', ')}</p>` : '';
 
             card.innerHTML = `
                 <h3>${profile.name || '未命名画像'}</h3>
                 <p>${profile.description || '无详细描述'}</p>
-                <p>
-                    ${profile.country_region ? `<strong>国家/地区:</strong> ${profile.country_region}<br>` : ''}
-                    ${profile.occupation ? `<strong>职业:</strong> ${profile.occupation}<br>` : ''}
-                    ${profile.cognitive_level ? `<strong>认知水平:</strong> ${profile.cognitive_level}<br>` : ''}
-                    ${concernsHTML}
-                    ${profile.potential_needs ? `<strong>潜在需求:</strong> ${profile.potential_needs}<br>` : ''}
-                    ${profile.cultural_background_summary ? `<strong>文化背景:</strong> ${profile.cultural_background_summary}` : ''}
-                </p>
+                ${profile.country_region ? `<p><strong>国家/地区:</strong> ${profile.country_region}</p>` : ''}
+                ${profile.occupation ? `<p><strong>职业:</strong> ${profile.occupation}</p>` : ''}
+                ${profile.cognitive_level ? `<p><strong>认知水平:</strong> ${profile.cognitive_level}</p>` : ''}
+                ${concernsHTML}
+                ${profile.potential_needs ? `<p><strong>潜在需求:</strong> ${profile.potential_needs}</p>` : ''}
+                ${profile.cultural_background_summary ? `<p><strong>文化背景:</strong> ${profile.cultural_background_summary}</p>` : ''}
                 <small>B2B问题: ${profile.b2b_questions ? profile.b2b_questions.length : 0} | B2C问题: ${profile.b2c_questions ? profile.b2c_questions.length : 0}</small>
             `;
-            card.addEventListener('click', () => {
-                renderQuestionsForProfile(index);
+
+            card.addEventListener('click', (event) => {
                 document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
+                renderQuestionsForProfile(index);
             });
             profilesDisplay.appendChild(card);
         });
+
+        if(currentProfilesData.length > 0){
+            const firstCard = profilesDisplay.querySelector('.profile-card');
+            if(firstCard){
+                firstCard.classList.add('active');
+                renderQuestionsForProfile(0);
+            }
+        } else {
+            questionsDisplayContainer.style.display = 'none';
+        }
     }
 
     function renderQuestionsForProfile(profileIndex) {
         const profile = currentProfilesData[profileIndex];
-        if (!profile) return;
+        if (!profile) {
+            questionsDisplayContainer.style.display = 'none';
+            return;
+        }
 
         selectedProfileNameHeader.textContent = `“${profile.name || '该画像'}” 可能提出的问题:`;
         b2bQuestionsUl.innerHTML = '';
@@ -147,6 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             b2cQuestionsUl.innerHTML = '<li>未能生成B2C问题。</li>';
         }
-        questionsDisplayContainer.style.display = 'block'; // 显示问题区域
+        // 确保 questionsDisplayContainer 在有内容时是可见的
+        // （它现在是 results-section 的子元素，results-section 的显示已控制）
+        // 如果 questionsDisplayContainer 内部还有独立的 display:none 逻辑，这里可以强制显示
+        questionsDisplayContainer.style.display = 'block';
     }
 });

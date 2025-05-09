@@ -1,145 +1,170 @@
-/* static/style.css - Blue & Green Clash Theme */
+/* static/style.css - Image Background with Sky Blue & Light Green Clash Theme */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    color: #e0f2f7; /* 淡青蓝色文字 */
+    color: #1f2933; /* 深灰蓝文字，与浅色背景对比 */
     overflow-x: hidden;
+    /* 基础背景色，以防图片加载失败或过慢 */
+    background-color: #e6f7ff; /* 非常淡的天蓝色 */
 }
 
+.image-background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* 在 Canvas 和 内容之下 */
+    background-image: url('background.png'); /* 引用你的背景图片 */
+    background-size: cover; /* 覆盖整个区域，可能裁剪 */
+    background-position: center center; /* 图片居中 */
+    background-repeat: no-repeat;
+    /* 可选：为图片添加轻微的动态效果或滤镜 */
+    /* animation: subtleImagePan 30s linear infinite alternate; */
+    /* filter: saturate(1.1) brightness(0.95); */
+}
+
+/* 可选的图片平移动画 */
+@keyframes subtleImagePan {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* 方案 A: 粒子动画 Canvas 的样式 */
 #background-animation-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
-    /* 蓝绿撞色渐变 */
-    background: linear-gradient(135deg, #0d47a1, #00796b, #2e7d32, #1565c0); /* 深蓝, 深青绿, 深绿, 中蓝 */
-    background-size: 400% 400%;
-    animation: gradientFlow 18s ease infinite;
+    z-index: -1; /* 在图片背景之上，但在内容之下 */
+    /* Canvas 本身不需要背景色，因为图片在它后面 */
 }
 
-@keyframes gradientFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
 
 .container {
     max-width: 1000px;
-    margin: 5vh auto;
-    background-color: rgba(10, 25, 47, 0.8); /* 深海军蓝半透明 */
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 150, 136, 0.4); /* 青色辉光 */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 200, 150, 0.25); /* 淡青色边框 */
+    margin: 7vh auto;
+    /* 容器背景需要根据你的图片风格调整 */
+    /* 示例：半透明浅色，能透出背景图片和粒子 */
+    background-color: rgba(240, 248, 255, 0.8); /* 爱丽丝蓝，透明度可调 */
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(70, 130, 180, 0.2); /* 钢蓝色柔和阴影 */
+    backdrop-filter: blur(5px) saturate(110%); /* 轻微模糊和饱和度，让内容更突出 */
+    -webkit-backdrop-filter: blur(5px) saturate(110%);
+    border: 1px solid rgba(173, 216, 230, 0.5); /* 淡天蓝色边框 */
     position: relative;
-    z-index: 1;
+    z-index: 1; /* 确保在背景和Canvas之上 */
 }
 
+/* --- 其他元素颜色（天蓝和浅绿撞色主题） --- */
+/* 你可以复用之前版本中天蓝和浅绿主题的样式，但可能需要根据背景图片调整颜色深浅和透明度 */
+
 h1, h2, h3, h4 {
-    color: #80cbc4; /* 淡青色 */
-    text-shadow: 0 0 6px rgba(128, 203, 196, 0.6);
+    color: #01579b; /* 深天蓝，确保在可能复杂的背景上可读 */
+    text-shadow: 0 1px 3px rgba(220, 240, 255, 0.7); /* 淡蓝色文字阴影 */
 }
 h1 {
     text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 30px;
-    color: #b2dfdb; /* 更亮的青色 */
+    font-size: 2.6em;
+    margin-bottom: 35px;
+    color: #0277bd; /* 鲜明的天蓝 */
+    font-weight: 600;
 }
 
-/* --- 输入区域 --- */
 .input-section label {
     display: inline-block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: 500;
-    color: #80cbc4; /* 淡青色 */
+    color: #0288d1; /* 中等天蓝色 */
 }
 .input-controls {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+    align-items: flex-end; /* 保持这个，使得label在其输入框上方时，按钮能和输入框底部对齐 */
+    gap: 18px;
+    margin-bottom: 25px;
     flex-wrap: wrap;
 }
 .input-controls label { margin-bottom: 0;}
 .input-controls div {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 textarea#product-info {
     width: 100%;
-    min-height: 150px;
+    min-height: 160px;
     padding: 15px;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 121, 107, 0.7); /* 深青绿色边框 */
-    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #b3e0ff; /* 淡天蓝边框 */
+    margin-bottom: 25px;
     font-size: 1em;
-    background-color: rgba(0, 50, 70, 0.7); /* 深青蓝背景 */
-    color: #e0f2f7; /* 淡青蓝色文字 */
+    background-color: rgba(230, 245, 255, 0.85); /* 非常淡的蓝色背景，高透明度 */
+    color: #263238;
     resize: vertical;
     box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 textarea#product-info:focus {
     outline: none;
-    border-color: #4db6ac; /* 中等青色 */
-    box-shadow: 0 0 10px rgba(77, 182, 172, 0.5);
+    border-color: #81d4fa; /* 亮天蓝色 */
+    box-shadow: 0 0 12px rgba(129, 212, 250, 0.7);
 }
 
 input[type="number"] {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid rgba(0, 121, 107, 0.7);
-    background-color: rgba(0, 50, 70, 0.7);
-    color: #e0f2f7;
-    width: 80px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #b3e0ff;
+    background-color: rgba(230, 245, 255, 0.85);
+    color: #263238;
+    width: 90px;
     box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 input[type="number"]:focus {
     outline: none;
-    border-color: #4db6ac;
-    box-shadow: 0 0 8px rgba(77, 182, 172, 0.5);
+    border-color: #81d4fa;
+    box-shadow: 0 0 10px rgba(129, 212, 250, 0.6);
 }
 
 button#generate-button {
-    padding: 12px 25px;
-    background: linear-gradient(135deg, #00796b, #006064); /* 青绿到深青 */
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #64b5f6, #81c784); /* 中天蓝 到 中浅绿 */
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1.1em;
     font-weight: bold;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(0, 121, 107, 0.5); /* 青绿色阴影 */
+    box-shadow: 0 4px 18px rgba(129, 199, 132, 0.5); /* 浅绿色阴影 */
     position: relative;
     overflow: hidden;
-    align-self: flex-end;
-    margin-top: auto;
+    /* 新增/修改下面这行 */
+    margin-left: auto; /* 这会将其推到 flex 容器的右侧 */
+    /* align-self: flex-end;  确保它与输入控件的底部对齐，如果容器变高 */
+    /* margin-top: auto; 如果上面有换行的label，这个可能不再需要，或者根据情况调整 */
 }
 
 button#generate-button:hover {
-    background: linear-gradient(135deg, #006064, #00796b);
-    box-shadow: 0 6px 20px rgba(0, 121, 107, 0.7);
+    background: linear-gradient(135deg, #42a5f5, #66bb6a); /* 悬停颜色加深 */
+    box-shadow: 0 6px 22px rgba(102, 187, 106, 0.6);
     transform: translateY(-2px);
 }
 
 button#generate-button:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 10px rgba(0, 121, 107, 0.6);
+    box-shadow: 0 2px 12px rgba(102, 187, 106, 0.5);
 }
 
-/* --- 点击特效 --- */
 .ripple {
     position: absolute;
     border-radius: 50%;
-    background: rgba(178, 223, 219, 0.4); /* 淡青色波纹 */
+    background: rgba(200, 230, 255, 0.7); /* 淡蓝色波纹 */
     transform: scale(0);
     animation: ripple-effect 0.6s linear;
     pointer-events: none;
@@ -153,17 +178,16 @@ button#generate-button:active {
 }
 
 button:disabled {
-    background: #263238; /* 深蓝灰色 */
-    color: #78909c; /* 蓝灰色 */
+    background: #b0bec5;
+    color: #78909c;
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
 }
 
-/* --- 加载和错误提示 --- */
 .loading-spinner {
-    border: 5px solid rgba(77, 182, 172, 0.25); /* 淡青色边框 */
-    border-top: 5px solid #4db6ac; /* 中青色 */
+    border: 5px solid rgba(129, 212, 250, 0.4);
+    border-top: 5px solid #4fc3f7;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -178,115 +202,114 @@ button:disabled {
 }
 
 .error-message-box {
-    color: #ef9a9a; /* 淡红色 */
-    border: 1px solid #ef5350; /* 红色 */
-    background-color: rgba(239, 83, 80, 0.15);
+    color: #c62828;
+    border: 1px solid #ef5350;
+    background-color: rgba(255, 220, 220, 0.9); /* 错误提示背景稍微不透明些 */
     padding: 15px;
     margin-top: 20px;
     border-radius: 8px;
     text-align: center;
 }
 
-/* --- 结果区域 --- */
-.results-area { margin-top: 30px; }
+.results-area { margin-top: 35px; }
 .results-area h2 {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    color: #0277bd;
 }
 .product-summary {
-    background-color: rgba(0, 77, 64, 0.3); /* 深青绿色半透明 */
-    padding: 20px;
-    border-left: 6px solid #4db6ac; /* 中青色 */
-    margin-bottom: 30px;
-    border-radius: 8px;
-    color: #e0f2f7;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: rgba(200, 230, 201, 0.85); /* 浅绿色，高透明度 */
+    padding: 22px;
+    border-left: 7px solid #81c784; /* 中浅绿 */
+    margin-bottom: 35px;
+    border-radius: 12px;
+    color: #212121;
+    box-shadow: 0 6px 20px rgba(129, 199, 132, 0.25);
 }
  .product-summary h3 {
     margin-top:0;
-    color: #a7ffeb; /* 非常亮的薄荷绿 */
+    color: #2e7d32; /* 中绿色 */
 }
 
 .customer-profiles-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
+    gap: 28px;
 }
 
 .profile-card {
-    background-color: rgba(13, 71, 161, 0.5); /* 深蓝色半透明，与绿色撞色 */
-    border: 1px solid rgba(0, 105, 92, 0.4); /* 青绿色边框 */
-    border-radius: 12px;
-    padding: 20px;
+    background-color: rgba(227, 242, 253, 0.9); /* 非常淡的青蓝色，更高不透明度以确保内容可读性 */
+    border: 1px solid rgba(173, 216, 230, 0.8);
+    border-radius: 15px;
+    padding: 22px;
     box-sizing: border-box;
     cursor: pointer;
     transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-    color: #e0f2f7;
+    box-shadow: 0 6px 25px rgba(173, 216, 230, 0.4);
+    color: #37474f;
     overflow: hidden;
     position: relative;
 }
 
 .profile-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(0, 150, 136, 0.5); /* 青色辉光 */
-    border-color: rgba(77, 208, 225, 0.8); /* 亮青蓝 */
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(129, 212, 250, 0.5);
+    border-color: #81d4fa;
 }
 
 .profile-card.active {
-    border-left: 6px solid #64ffda; /* 亮青绿色 */
-    background-color: rgba(21, 101, 192, 0.7); /* 中蓝色，更突出 */
-    box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
-    transform: scale(1.01);
+    border-left: 7px solid #4caf50; /* 鲜明绿色 */
+    background-color: rgba(210, 240, 211, 0.95); /* 更不透明的浅绿 */
+    box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+    transform: scale(1.02);
 }
 
 .profile-card h3 {
     margin-top: 0;
-    color: #81d4fa; /* 亮天蓝色 */
+    color: #01579b;
     font-size: 1.4em;
     margin-bottom: 12px;
 }
-
 .profile-card p {
     font-size: 0.95em;
-    line-height: 1.65;
+    line-height: 1.7;
     margin-bottom: 10px;
 }
 .profile-card p strong {
-    color: #80cbc4; /* 淡青色 */
+    color: #0277bd;
     font-weight: 600;
 }
 .profile-card small {
     font-size: 0.85em;
-    color: #90a4ae; /* 蓝灰色 */
+    color: #546e7a;
     display: block;
     margin-top: 15px;
     text-align: right;
 }
 
 .questions-display-container {
-    margin-top: 30px;
-    padding: 25px;
-    background-color: rgba(0, 50, 70, 0.6); /* 深青蓝背景 */
-    border: 1px solid rgba(0, 121, 107, 0.4);
-    border-radius: 12px;
+    margin-top: 35px;
+    padding: 28px;
+    background-color: rgba(232, 245, 233, 0.9); /* 淡绿色，更高不透明度 */
+    border: 1px solid rgba(165, 214, 167, 0.8);
+    border-radius: 15px;
     display:none;
-    color: #e0f2f7;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    color: #37474f;
+    box-shadow: 0 6px 25px rgba(165, 214, 167, 0.3);
 }
 .questions-display-container h3 {
      text-align: center;
-     margin-bottom: 20px;
+     margin-bottom: 22px;
      font-size: 1.5em;
-     color: #81d4fa; /* 亮天蓝色 */
+     color: #01579b;
 }
 
 .questions-list h4 {
     margin-top: 0;
-    color: #a7ffeb; /* 非常亮的薄荷绿 */
-    border-bottom: 1px solid rgba(0, 121, 107, 0.3);
-    padding-bottom: 12px;
-    margin-bottom: 18px;
+    color: #2e7d32;
+    border-bottom: 1px solid rgba(129, 199, 132, 0.5);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
     font-size: 1.2em;
 }
 
@@ -296,14 +319,14 @@ button:disabled {
 }
 
 .questions-list li {
-    padding: 10px 5px;
-    border-bottom: 1px dashed rgba(0, 121, 107, 0.3);
+    padding: 12px 8px;
+    border-bottom: 1px dashed rgba(165, 214, 167, 0.5);
     transition: background-color 0.25s ease, color 0.25s ease;
-    border-radius: 4px;
+    border-radius: 6px;
 }
 .questions-list li:hover {
-    background-color: rgba(0, 105, 92, 0.2); /* 青绿色悬停背景 */
-    color: #ffffff;
+    background-color: rgba(188, 226, 190, 0.6);
+    color: #1b5e20;
 }
 
 .questions-list li:last-child {
@@ -314,35 +337,33 @@ button:disabled {
     margin-bottom: 30px;
 }
 
-/* --- 滚动条样式 (可选, Webkit 浏览器) --- */
 ::-webkit-scrollbar {
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(10, 25, 47, 0.7); /* 深海军蓝 */
-    border-radius: 5px;
+    background: rgba(227, 242, 253, 0.6);
 }
 ::-webkit-scrollbar-thumb {
-    background: #00796b; /* 深青绿 */
+    background: #90caf9;
     border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #009688; /* 中青绿 */
+    background: #64b5f6;
 }
 
-/* --- 基本响应式调整 --- */
 @media (max-width: 768px) {
     .container {
-        margin: 2vh auto;
+        margin: 3vh auto;
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 12px;
+        background-color: rgba(240, 248, 255, 0.88); /* 小屏幕上可以稍微不透明些 */
     }
-    h1 { font-size: 2em; }
+    h1 { font-size: 2.2em; }
 
     .input-controls {
-        flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
+        flex-direction: column; /* 在小屏幕上，元素垂直排列 */
+        gap: 18px;
+        align-items: stretch; /* 子元素（包括按钮）会撑满宽度 */
     }
     .input-controls div {
         width: 100%;
@@ -351,16 +372,19 @@ button:disabled {
         width: 100%;
     }
     button#generate-button {
-        width: 100%;
+        width: 100%; /* 在小屏幕上，按钮通常会设置为全宽 */
+        margin-left: 0; /* 在垂直排列时，移除左边距自动效果 */
         margin-top: 10px;
+        padding: 14px 25px;
     }
 
     .customer-profiles-container {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     .profile-card:hover {
         transform: none;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+        box-shadow: 0 6px 25px rgba(173, 216, 230, 0.4);
     }
      .profile-card.active {
         transform: none;
@@ -369,10 +393,11 @@ button:disabled {
 @media (max-width: 480px) {
     .container {
         padding: 15px;
+        margin: 2vh auto;
     }
-    h1 { font-size: 1.8em; }
-    .profile-card h3 { font-size: 1.2em; }
-    .profile-card p { font-size: 0.9em; }
-    .questions-display-container h3 { font-size: 1.3em; }
-    .questions-list h4 { font-size: 1.1em; }
+    h1 { font-size: 1.9em; }
+    .profile-card h3 { font-size: 1.25em; }
+    .profile-card p { font-size: 0.92em; }
+    .questions-display-container h3 { font-size: 1.35em; }
+    .questions-list h4 { font-size: 1.15em; }
 }

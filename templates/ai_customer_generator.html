@@ -8,31 +8,31 @@
 </head>
 <body>
     <canvas id="background-animation-canvas"></canvas>
-    <div class="container">
+    <div class="image-background-layer"></div> <div class="container">
         <h1>AI外贸顾客画像与问题生成器</h1>
 
         <div class="input-section">
-            <h2>1. 输入产品信息</h2>
+            <h2>请输入您的产品信息</h2>
             <textarea id="product-info" placeholder="在此处粘贴您的产品文档、规格、特点、目标市场等信息..."></textarea>
 
             <div class="input-controls">
                 <div>
-                    <label for="num-profiles">生成画像数量 (1-10):</label>
+                    <label for="num-profiles">生成数量 (1-10):</label>
                     <input type="number" id="num-profiles" value="3" min="1" max="10">
                 </div>
                 <div>
-                    <label for="num-questions">每个画像的问题数 (2-10):</label>
+                    <label for="num-questions">每个客户的问题数 (2-10):</label>
                     <input type="number" id="num-questions" value="6" min="2" max="10">
                 </div>
-                <button id="generate-button">生成AI数据</button>
+                <button id="generate-button">创建您的专属AI客户</button>
             </div>
         </div>
 
         <div id="loading-spinner" class="loading-spinner"></div>
         <div id="error-box" class="error-message-box" style="display:none;"></div>
 
-        <div class="results-area">
-            <h2>2. AI生成结果</h2>
+        <div id="results-section" class="results-area" style="display:none;">
+            <h2>下面是您的专属AI客户</h2>
             <div id="product-summary-container" class="product-summary" style="display:none;">
                 <h3>产品摘要 (AI理解)</h3>
                 <p id="product-summary-text"></p>
@@ -40,8 +40,7 @@
             <div id="customer-profiles-display" class="customer-profiles-container">
                 </div>
 
-            <div id="questions-display-container" class="questions-display-container">
-                <h3 id="selected-profile-name-header"></h3>
+            <div id="questions-display-container" class="questions-display-container"> <h3 id="selected-profile-name-header"></h3>
                 <div class="b2b-questions questions-list">
                     <h4>B2B (面向企业) 问题:</h4>
                     <ul id="b2b-questions-ul"></ul>

@@ -3,53 +3,41 @@ from typing import List, Optional
 
 # --- 系统角色定义 ---
 PRODUCT_ANALYST_SYSTEM_PROMPT = (
-    "You are a senior product analyst. Your task is to analyze product information. "
+    "You are a senior product analyst. Analyze product info. "
     "Your response MUST be a single valid JSON object. This object MUST contain a key named 'product_summary'. "
-    "The value of 'product_summary' should be a string containing a concise and informative summary of the product's "
-    "core features, main advantages, preliminary target customer profile ideas, and suitable foreign trade scenarios. "
-    "Example of expected output format: "
-    "{\"product_summary\": \"This innovative solar panel is highly efficient and durable, ideal for off-grid applications...\"} "
-    "ABSOLUTELY NO other text, explanations, or conversational wrappers should be present in your output. "
-    "ONLY the JSON object. If you cannot generate a summary, return an empty JSON object: {}"
+    "The value of 'product_summary' should be a concise string covering core features, advantages, target customers, and trade scenarios. "
+    "Example: {\"product_summary\": \"Efficient solar panel, great for off-grid use...\"}. "
+    "NO other text. If unable to summarize, output an empty JSON object: {}"
 )
 
 MARKET_ANALYSIS_EXPERT_SYSTEM_PROMPT = (
-    "You are an AI assistant that generates JSON data representing customer profiles for foreign trade scenarios. "
-    "Your response MUST be a valid JSON array of customer profile objects. "
-    "Each object in the array must conform to the structure specified in the user prompt. "
-    "Example of expected output format: "
-    "[{\"name\": \"Profile Name 1\", \"description\": \"Description 1...\"}, {\"name\": \"Profile Name 2\", \"description\": \"Description 2...\"}] "
-    "If you cannot generate any profiles, you MUST return an empty JSON array, i.e., []. "
-    "ABSOLUTELY NO other text, explanations, or conversational wrappers should be present in your output. "
-    "ONLY the JSON array."
+    "AI generating customer profiles for foreign trade. "
+    "Output MUST be a valid JSON array of profile objects (e.g., [{\"name\": \"N1\", ...}, {\"name\": \"N2\", ...}]). "
+    "Each profile object structure is defined in the user prompt. "
+    "NO other text. If unable to generate profiles, output an empty JSON array: []"
 )
 
 B2B_QUESTION_GENERATION_SYSTEM_PROMPT = (
-    "You are an AI assistant tasked with generating B2B (business-to-business) questions in English "
-    "based on a customer profile and product information. "
-    "Your response MUST be a valid JSON array. Each element of the array MUST be a JSON object "
-    "containing a single key 'text' with a string value representing the question. "
-    "Example of expected output format: "
-    "[{\"text\": \"What are the MOQ for distributors?\"}, {\"text\": \"Can you provide compliance certifications?\"}] "
-    "If you cannot generate meaningful questions, you MUST return an empty JSON array, i.e., []. "
-    "ABSOLUTELY NO other text, explanations, or conversational wrappers should be present in your output. "
-    "ONLY the JSON array."
+    "AI generating B2B questions based on customer profile & product info. "
+    "Output MUST be a JSON array of question objects: [{\"text\": \"Question 1...\"}, {\"text\": \"Question 2...\"}]. "
+    "Questions should be professional, business-focused. "
+    "NO other text. If unable to generate questions, output an empty JSON array: []"
 )
 
 B2C_QUESTION_GENERATION_SYSTEM_PROMPT = (
-    "You are an AI assistant tasked with generating B2C (business-to-consumer) questions in English "
-    "based on a customer profile and product information. "
-    "Your response MUST be a valid JSON array. Each element of the array MUST be a JSON object "
-    "containing a single key 'text' with a string value representing the question. "
-    "Example of expected output format: "
-    "[{\"text\": \"Is this product easy to use at home?\"}, {\"text\": \"What is the warranty period?\"}] "
-    "If you cannot generate meaningful questions, you MUST return an empty JSON array, i.e., []. "
-    "ABSOLUTELY NO other text, explanations, or conversational wrappers should be present in your output. "
-    "ONLY the JSON array."
+    "AI generating B2C questions based on customer profile & product info. "
+    "Output MUST be a JSON array of question objects: [{\"text\": \"Question 1...\"}, {\"text\": \"Question 2...\"}]. "
+    "Questions should be casual, consumer-focused. "
+    "NO other text. If unable to generate questions, output an empty JSON array: []"
 )
 
-
 # --- 用户提示模板 ---
+# 用户提示模板函数 (get_product_summary_user_prompt, get_profile_generation_user_prompt,
+# get_b2b_question_generation_user_prompt, get_b2c_question_generation_user_prompt)
+# 中的固定文本部分相对简洁，主要长度来自于注入的 product_info_or_summary。
+# 因此，保持这些函数与上一版本类似即可，关键在于控制注入内容的长度。
+# 这里为了完整性，列出与上一版本一致的用户提示模板函数：
+
 def get_product_summary_user_prompt(product_document: str) -> str:
     return f"Product Information:\n```\n{product_document}\n```\nGenerate the product summary as a JSON object according to the system instructions."
 

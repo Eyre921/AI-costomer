@@ -27,7 +27,7 @@ if not EXTERNAL_API_KEY:
     # raise ValueError("EXTERNAL_API_KEY is not set. Please configure it in your .env file or environment variables.")
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("../static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # --- Pydantic 模型定义 ---

@@ -13,3 +13,9 @@ if __name__ == "__main__":
 
     # Uvicorn会查找名为 app 的模块中名为 app 的FastAPI实例
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+
+    # 生产环境配置
+    # reload=False, workers 可以根据CPU核心数设置，例如 2 * CPU核心数 + 1
+    # 例如，如果有2核CPU，可以设置 workers=5
+    # 如果不确定，可以先不设置 workers，Uvicorn 默认是1个 worker
+    # uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False, workers=4) # 示例 workers=4

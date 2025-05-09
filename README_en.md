@@ -171,7 +171,6 @@ Settings are managed in `app/config.py` and use `.env` variables:
 * `EXTERNAL_API_URL`
 * `EXTERNAL_API_KEY`
 * `DEFAULT_LLM_MODEL`
-* `PROJECT_NAME`
 
 Make sure `.env` contains correct values. You can start with `.env.template` and edit as needed.
 

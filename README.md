@@ -149,7 +149,6 @@ AI 客户生成器是一款基于 FastAPI 的 Web 应用程序，它利用大型
 * `EXTERNAL_API_URL`
 * `EXTERNAL_API_KEY`
 * `DEFAULT_LLM_MODEL`
-* `PROJECT_NAME`
 
 请确保 `.env` 包含正确的值。您可以从 `.env.template` 开始，并根据需要进行编辑。
 
